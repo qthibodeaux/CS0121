@@ -3,13 +3,19 @@ import { Controller, useForm } from 'react-hook-form'
 import axios from 'axios'
 
 function Index () {
-  const { register, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors, getValues } = useForm()
   const password = useRef({})
-  //password.current = watch("password", "")
   const [emailValid, setEmailValid] = useState()
   const [passwordValid, setPasswordValid] = useState()
   const [confirmValid, setConfirmValid] = useState()
   const [passwordConfirm, setPasswordConfirm] = useState(false)
+  /*
+  ref={register({
+      validate: {
+        emailEqual: value => (value === getValues().email) || 'Email confirmation error!',
+      }
+    })}
+    */
 
   const onSubmit = data => {
     emailsValidation(data)
@@ -67,7 +73,7 @@ function Index () {
             </div>
             <div className="mb-3">
               <label htmlFor="InputEmail" className="form-label is-valid">Email address</label>
-              <input type="email" className={`form-control ${emailValid}`} id="InputEmail" placeholder="Enter email" name="email" id="emailCheck" ref={register({ required: true })} />
+              <input type="email" className={`form-control ${emailValid}`} id="InputEmail" placeholder="Enter email" name="email" ref={register({ required: true, })} />
               {errors.email && "Email already exists"}
               <div id="validationEmailFeedback" className="invalid-feedback">
                 Email already exists
