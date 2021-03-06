@@ -9,7 +9,7 @@ exports.register = async (req, res) => {
 
     try {
         let emailCheck = await User.findOne({where: {email: req.body.email}})
-        if (emailCheck) { res.json({msg: 'This user already exists', add: false})}
+        if (emailCheck) { res.json({msg: 'This user already exists', error: true})}
         else {
             User.create({
                 name,
@@ -20,8 +20,7 @@ exports.register = async (req, res) => {
             })
         }
     } catch (err) {
-        console.log(err)
-        res.status(500).send()
+        res.status(500).send(err)
     }
 }
 
@@ -30,10 +29,18 @@ exports.login = async (req, res) => {
         where: {email: req.body.email}
     })
 
-    if (!getUser) return res.status(400).send('User is not found.')
+    if (!getUser) { 
+        return res.json({
+            msg: 'The email was not found', emailError: true
+        }) 
+    }
 
     const isValid = await bcrypt.compare(req.body.password, getUser.dataValues.password)
-    if (!isValid) return res.status(400).send('The password is incorrect.')
+    if (!isValid) { 
+        return res.json({
+            msg: 'The password did not match', passwordError: true
+        }) 
+    }
 
     const token = jwt.sign(getUser.dataValues.name, process.env.ACCESS_TOKEN_SECRET)
     res.send({token: token})
