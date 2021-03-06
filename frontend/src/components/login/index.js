@@ -14,6 +14,9 @@ function LoginForm () {
     .then(function (response){
       if (response.data.emailError) setEmailError(false)
       if (response.data.passwordError) setPasswordError(false)
+      if (response.data) {
+        localStorage.setItem("token", response.data.token)
+      }
     })
     .catch(function (err) {
       console.log(err)
@@ -35,7 +38,7 @@ function LoginForm () {
             <input type="password" className="form-control" placeholder="Password" name="password" ref={register({ required: true })} />
             {passwordError ? null : "Your password is incorrect"}
           </div>
-          <button className="btn btn-primary text-light" type="submit">Login in</button>
+          <button className="btn btn-primary text-light" type="submit">Login</button>
           <div className="d-flex justify-content-center">
             <p>New user?</p>
             <a href="/"> Create an account.</a>
