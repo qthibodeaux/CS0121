@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 
-function Index () {
+function LoginForm () {
   const [emailError, setEmailError] = useState(true)
   const [passwordError, setPasswordError] = useState(true)
   const { register, handleSubmit } = useForm()
@@ -45,4 +45,4 @@ function Index () {
     )
 }
 
-export default Index
+export default LoginForm

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 
-function Index () {
+function RegisterForm () {
   const [emailError, setEmailError] = useState(false)
   const { register, handleSubmit, errors, getValues } = useForm()
   const onSubmit = async (data) => {
@@ -62,4 +62,4 @@ function Index () {
     )
 }
 
-export default Index
+export default RegisterForm
