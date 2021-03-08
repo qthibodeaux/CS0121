@@ -63,7 +63,7 @@ function RegisterForm () {
 
         <div className="d-flex justify-content-center">
           <p>Already a user?</p>
-          <a href="/">Login to your account</a>
+          <a href="/login">Login to your account</a>
         </div>
       </form>
     </div>
