@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 
@@ -15,11 +16,15 @@ function LoginForm () {
       console.log(response)
       if (response.data.emailError) {
         setEmailError(true)
-        console.log(emailError)
       }
       if (response.data.passwordError) setPasswordError(true)
       if (response.data) {
         localStorage.setItem("token", response.data.token)
+      }
+    })
+    .then(function (response){
+      if(localStorage.token) {
+        return (<Redirect push to='/' />)
       }
     })
     .catch(function (err) {
@@ -35,9 +40,9 @@ function LoginForm () {
           <div className="mb-3">
             <label className="form-label">Email address</label>
             <input type="text" className={ errors.email ? "form-control is-invalid" : "form-control"} placeholder="Enter email" name="email" ref={register({ required: "Email is required" })} />
-            { emailError ? (<div className="invalid-feedback">
+            <div className="invalid-feedback">
               Please select a valid state.
-            </div>) : " huh "}
+            </div>
           </div>
           <div className="mb-3">
             <label className="form-label is-valid">Password</label>
@@ -47,7 +52,7 @@ function LoginForm () {
           <button className="btn btn-primary text-light" type="submit">Login</button>
           <div className="d-flex justify-content-center">
             <p>New user?</p>
-            <a href="/"> Create an account.</a>
+            <a href="/register"> Create an account.</a>
           </div>
         </form>
       </div>
