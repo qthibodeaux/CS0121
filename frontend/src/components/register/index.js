@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 function RegisterForm () {
+  let history = useHistory()
   const [emailError, setEmailError] = useState(false)
   const { register, handleSubmit, errors, getValues } = useForm()
   const onSubmit = async (data) => {
+    setEmailError(false)
     axios.post("/register", {
       name: data.fname,
       email: data.email,
@@ -13,6 +16,10 @@ function RegisterForm () {
     })
     .then(function (response){
       if (response.data.error) setEmailError(true)
+      else {
+        localStorage.setItem("token", response.data.token)
+        history.push('/')
+      }
     })
     .catch(function (err) {
       console.log(err)
@@ -21,8 +28,8 @@ function RegisterForm () {
   }
 
     return (
-      <div className="col-lg-5 d-flex flex-column">
-      <form className="needs-validation" onSubmit={handleSubmit(onSubmit)}>
+      <div id="blue" className="col-lg-5 d-flex flex-column">
+      <form className="needs-validation d-flex flex-column" onSubmit={handleSubmit(onSubmit)}>
         <h4><strong>Create your account</strong></h4>
         <div className="mb-3">
           <label className="form-label">Full Name</label>
@@ -34,7 +41,7 @@ function RegisterForm () {
           <label className="form-label is-valid">Email address</label>
           <input type="email" className={ errors.email ? "form-control is-invalid" : "form-control"} placeholder="Enter email" name="email" ref={register({ required: true
           })} />
-          {emailError ? null : <div className="invalid-feedback">Email already exists"</div>}
+          {emailError && <div style={{ color: 'red' }}>Email already exists</div>}
           <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
           
         </div>
@@ -63,7 +70,7 @@ function RegisterForm () {
 
         <div className="d-flex justify-content-center">
           <p>Already a user?</p>
-          <a href="/">Login to your account</a>
+          <a href="/login">Login to your account</a>
         </div>
       </form>
     </div>
