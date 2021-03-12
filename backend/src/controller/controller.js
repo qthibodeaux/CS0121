@@ -16,7 +16,8 @@ exports.register = async (req, res) => {
                 email,
                 password: await bcrypt.hash(password, 10)
             }).then(user => {
-                res.send(user)
+                const token = jwt.sign(user.name, process.env.ACCESS_TOKEN_SECRET)
+                res.send({token: token})
             })
         }
     } catch (err) {
